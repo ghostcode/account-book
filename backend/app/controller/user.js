@@ -91,19 +91,56 @@ class UserController extends Controller {
     };
   }
 
-  async test() {
+  async getUserInfo() {
     const { ctx, app } = this;
+    const token = ctx.request.header.authorization
 
-    const token = ctx.request.header.authorization;
-
-    const decode = await app.jwt.verify(token,app.config.jwt.secret);
+    const decode = await app.jwt.verify(token, app.config.jwt.secret)
+    
+    const userInfo = await ctx.service.user.getUserByName(decode.username)
 
     ctx.body = {
       code: 200,
-      message: '获取成功',
+      msg: '请求成功',
       data: {
-        ...decode
+        id: userInfo.id,
+        username: userInfo.username,
+        signature: userInfo.signature || '',
+        avatar:userInfo.avatar || ''
       }
+    }
+  }
+
+  async editUserInfo() {
+    const { ctx, app } = this;
+    const { signature = '',avatar='' } = ctx.request.body
+
+    try {
+      let user_id
+      const token = ctx.request.header.authorization
+      const decode = await app.jwt.verify(token, app.config.jwt.secret)
+
+      if (!decode) return
+      user_id = decode.id
+      const userInfo = await ctx.service.user.getUserByName(decode.username);
+      const result = await ctx.service.user.editUserInfo({
+        ...userInfo,
+        signature,
+        avatar,
+      })
+
+      ctx.body = {
+        code: 200,
+        msg: '请求成功',
+        data: {
+          id: user_id,
+          signature,
+          username: userInfo.username,
+          avatar
+        }
+      }
+    } catch (error) {
+      
     }
   }
 }

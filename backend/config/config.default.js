@@ -50,9 +50,14 @@ module.exports = (appInfo) => {
     secret:'shitou'
   }
 
+  config.multipart = {
+    mode:'file',
+  }
+
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
+    uploadDir: "app/public/upload",
   };
 
   return {

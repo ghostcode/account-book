@@ -8,6 +8,8 @@ module.exports = (secret) => {
     if (token != 'null' && token) {
       try {
         decode = ctx.app.jwt.verify(token, secret)
+
+      console.log(">>>>>>>>>> token", decode);
         await next()
       } catch (error) {
         console.log('error',error) 

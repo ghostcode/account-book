@@ -4,13 +4,14 @@ import {
   Route,
   Routes,
 } from 'react-router-dom'
-import routes from '../src/router'
+import routes from '@/router'
 import './App.css'
 
 import { ConfigProvider } from 'zarm'
 import zhCN from 'zarm/lib/config-provider/locale/zh_CN'
 import 'zarm/dist/zarm.css'
 
+import NavBar from '@/components/NavBar'
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
           }
         </Routes>
       </ConfigProvider>
+      <NavBar visible={true}/>
     </Router>
   )
 }
